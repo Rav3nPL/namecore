@@ -647,6 +647,7 @@ name_buildunotrie (const json_spirit::Array& params, bool fHelp)
   json_spirit::Object res;
   res.push_back (json_spirit::Pair ("hash", trie.GetHash ().GetHex ()));
   res.push_back (json_spirit::Pair ("size", size.size ()));
+  res.push_back (json_spirit::Pair ("ok", trie.Check (expanded)));
 
   return res;
 }
