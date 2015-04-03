@@ -576,6 +576,9 @@ class CBuildUnoWalker : public CNameWalker
 
 private:
 
+  /** Expanded flag for inserts.  */
+  bool expanded;
+
   /** Insert elements here.  */
   CUnoTrie& trie;
 
@@ -584,9 +587,10 @@ public:
   /**
    * Construct the object, given the empty trie to insert into.
    * @param t The trie to insert into.
+   * @param ex Expanded flag.
    */
-  explicit inline CBuildUnoWalker (CUnoTrie& t)
-    : trie(t)
+  inline CBuildUnoWalker (CUnoTrie& t, bool ex)
+    : expanded(ex), trie(t)
   {}
 
   /**
@@ -602,17 +606,19 @@ public:
 bool
 CBuildUnoWalker::nextName (const valtype& name, const CNameData& data)
 {
-  trie.Insert (name.begin (), name.end (), data);
+  trie.Set (name.begin (), name.end (), data, expanded);
   return true;
 }
 
 json_spirit::Value
 name_buildunotrie (const json_spirit::Array& params, bool fHelp)
 {
-  if (fHelp || params.size () != 0)
+  if (fHelp || params.size () > 1)
     throw std::runtime_error (
-        "name_unotrie\n"
+        "name_unotrie (\"expanded\")\n"
         "\nBuild the UNO trie and report data about it.\n"
+        "\nArguments:\n"
+        "1. \"expanded\"          (bool, optional) build expanded trie\n"
         "\nResult:\n"
         "{\n"
         "  \"hash\": xxxx,        (string) root hash of the UNO trie\n"
@@ -623,8 +629,12 @@ name_buildunotrie (const json_spirit::Array& params, bool fHelp)
         + HelpExampleRpc ("name_buildunotrie", "")
       );
 
+  bool expanded = false;
+  if (params.size () >= 1)
+    expanded = params[0].get_bool ();
+
   CUnoTrie trie;
-  CBuildUnoWalker walker(trie);
+  CBuildUnoWalker walker(trie, expanded);
   {
     LOCK (cs_main);
     pcoinsTip->Flush ();

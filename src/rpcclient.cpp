@@ -96,6 +96,7 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "name_filter", 1 },
     { "name_filter", 2 },
     { "name_filter", 3 },
+    { "name_buildunotrie", 0 },
 };
 
 class CRPCConvertTable
