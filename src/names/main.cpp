@@ -726,7 +726,7 @@ CheckNameDB (bool disconnect)
     }
 
   pcoinsTip->Flush ();
-  const bool ok = pcoinsTip->ValidateNameDB ();
+  bool ok = pcoinsTip->ValidateNameDB ();
 
   /* The DB is inconsistent (mismatch between UTXO set and names DB) between
      (roughly) blocks 139,000 and 180,000.  This is caused by libcoin's
@@ -741,5 +741,16 @@ CheckNameDB (bool disconnect)
         LogPrintf ("This is expected due to 'name stealing'.\n");
       else
         assert (false);
+    }
+
+  /* Check UNO trie.  */
+  if (pcoinsTip->HasUnoTrie ())
+    {
+      ok = pcoinsTip->CheckUnoTrie ();
+      if (!ok)
+        {
+          LogPrintf ("ERROR: %s: UNO trie is not valid\n", __func__);
+          assert (false);
+        }
     }
 }

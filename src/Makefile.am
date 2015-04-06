@@ -186,7 +186,6 @@ libbitcoin_server_a_SOURCES = \
   merkleblock.cpp \
   miner.cpp \
   names/main.cpp \
-  names/unotrie.cpp \
   net.cpp \
   noui.cpp \
   pow.cpp \
@@ -266,6 +265,7 @@ libbitcoin_common_a_SOURCES = \
   key.cpp \
   keystore.cpp \
   names/common.cpp \
+  names/unotrie.cpp \
   netbase.cpp \
   protocol.cpp \
   pubkey.cpp \
