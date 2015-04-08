@@ -262,7 +262,7 @@ extern json_spirit::Value name_history(const json_spirit::Array& params, bool fH
 extern json_spirit::Value name_scan(const json_spirit::Array& params, bool fHelp);
 extern json_spirit::Value name_filter(const json_spirit::Array& params, bool fHelp);
 extern json_spirit::Value name_checkdb(const json_spirit::Array& params, bool fHelp);
-extern json_spirit::Value name_buildunotrie(const json_spirit::Array& params, bool fHelp);
+extern json_spirit::Value getunotrieinfo(const json_spirit::Array& params, bool fHelp);
 extern json_spirit::Value name_list(const json_spirit::Array& params, bool fHelp);
 extern json_spirit::Value name_new(const json_spirit::Array& params, bool fHelp);
 extern json_spirit::Value name_firstupdate(const json_spirit::Array& params, bool fHelp);
