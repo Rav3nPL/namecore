@@ -238,9 +238,18 @@ CUnoTrie::InternalCheck (bool root, bool expanded) const
         return error ("%s: non-expanded trie has pure edge", __func__);
     }
 
+  /* Verify all child nodes.  */
   BOOST_FOREACH(const PAIRTYPE(unsigned char, CUnoTrie*)& child, children)
     if (!child.second->InternalCheck (false, expanded))
       return false;
+
+  /* Recompute the hash and check the cached one (if any).  */
+  const uint256 oldHash = hash;
+  hash.SetNull ();
+  GetHash ();
+  assert (!hash.IsNull ());
+  if (!oldHash.IsNull () && oldHash != hash)
+    return error ("%s: cached hash was wrong", __func__);
 
   return true;
 }
