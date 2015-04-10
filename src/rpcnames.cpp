@@ -596,9 +596,10 @@ getunotrieinfo (const json_spirit::Array& params, bool fHelp)
       const CUnoTrie& trie = pcoinsTip->GetUnoTrie ();
       res.push_back (json_spirit::Pair ("hash", trie.GetHash ().GetHex()));
 
-      CSizeComputer size(SER_NETWORK, PROTOCOL_VERSION);
-      size << trie;
-      res.push_back (json_spirit::Pair ("size", size.size ()));
+      CSizeComputer sizeComputer(SER_NETWORK, PROTOCOL_VERSION);
+      sizeComputer << trie;
+      const int size = sizeComputer.size ();
+      res.push_back (json_spirit::Pair ("size", size));
     }
   else
     /* TODO: Compute hash without in-memory trie.  */
